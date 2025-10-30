@@ -19,6 +19,10 @@ async function run(): Promise<void> {
         issue_number: issue
       })
 
+      console.log(
+        `Comments`, resp.data
+      )
+
       const comments = resp.data.filter(
         it => it.user?.login === userName && it.body?.match(bodyRegex)
       )

@@ -57,6 +57,7 @@ function run() {
                     repo: github.context.repo.repo,
                     issue_number: issue
                 });
+                console.log(`Comments`, resp.data);
                 const comments = resp.data.filter(it => { var _a, _b; return ((_a = it.user) === null || _a === void 0 ? void 0 : _a.login) === userName && ((_b = it.body) === null || _b === void 0 ? void 0 : _b.match(bodyRegex)); });
                 for (const comment of comments) {
                     console.log(`Processing issue ${comment.issue_url} user: ${(_a = comment.user) === null || _a === void 0 ? void 0 : _a.login} comment: ${comment.body}`);
