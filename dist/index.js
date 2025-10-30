@@ -51,16 +51,21 @@ function run() {
             const issueNumber = parseInt(core.getInput('issue_number'));
             const octokit = github.getOctokit(token);
             const deleteComments = (issue) => __awaiter(this, void 0, void 0, function* () {
+                /*const resp = await octokit.rest.issues.listComments({
+                  owner: github.context.repo.owner,
+                  repo: github.context.repo.repo,
+                  issue_number: issue
+                })*/
                 var _a;
-                const resp = yield octokit.rest.issues.listComments({
+                const resp = yield octokit.rest.pulls.listReviewComments({
                     owner: github.context.repo.owner,
                     repo: github.context.repo.repo,
-                    issue_number: issue
+                    pull_number: issue
                 });
                 console.log(`Comments`, resp.data);
                 const comments = resp.data.filter(it => { var _a, _b; return ((_a = it.user) === null || _a === void 0 ? void 0 : _a.login) === userName && ((_b = it.body) === null || _b === void 0 ? void 0 : _b.match(bodyRegex)); });
                 for (const comment of comments) {
-                    console.log(`Processing issue ${comment.issue_url} user: ${(_a = comment.user) === null || _a === void 0 ? void 0 : _a.login} comment: ${comment.body}`);
+                    console.log(`Processing issue ${comment.pull_request_url} user: ${(_a = comment.user) === null || _a === void 0 ? void 0 : _a.login} comment: ${comment.body}`);
                     yield octokit.request('DELETE /repos/{owner}/{repo}/issues/comments/{comment_id}', {
                         owner: github.context.repo.owner,
                         repo: github.context.repo.repo,

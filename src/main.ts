@@ -13,10 +13,16 @@ async function run(): Promise<void> {
     const octokit = github.getOctokit(token)
 
     const deleteComments = async (issue: number): Promise<void> => {
-      const resp = await octokit.rest.issues.listComments({
+      /*const resp = await octokit.rest.issues.listComments({
         owner: github.context.repo.owner,
         repo: github.context.repo.repo,
         issue_number: issue
+      })*/
+
+      const resp = await octokit.rest.pulls.listReviewComments({
+        owner: github.context.repo.owner,
+        repo: github.context.repo.repo,
+        pull_number: issue
       })
 
       console.log(
@@ -29,7 +35,7 @@ async function run(): Promise<void> {
 
       for (const comment of comments) {
         console.log(
-          `Processing issue ${comment.issue_url} user: ${comment.user?.login} comment: ${comment.body}`
+          `Processing issue ${comment.pull_request_url} user: ${comment.user?.login} comment: ${comment.body}`
         )
 
         await octokit.request(
