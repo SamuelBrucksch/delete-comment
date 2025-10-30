@@ -25,10 +25,6 @@ async function run(): Promise<void> {
         pull_number: issue
       })
 
-      console.log(
-        `Comments`, resp.data
-      )
-
       const comments = resp.data.filter(
         it => it.user?.login === userName && it.body?.match(bodyRegex)
       )
@@ -39,7 +35,7 @@ async function run(): Promise<void> {
         )
 
         await octokit.request(
-          'DELETE /repos/{owner}/{repo}/issues/comments/{comment_id}',
+          'DELETE /repos/{owner}/{repo}/pulls/comments/{comment_id}',
           {
             owner: github.context.repo.owner,
             repo: github.context.repo.repo,
